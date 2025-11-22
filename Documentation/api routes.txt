@@ -1,0 +1,23 @@
+1. /google-login
+
+2. /user/:id    -> auth required
+
+3. /tutorial/:id
+
+4. /tutorials
+
+5. /enrolled-courses    -> auth required
+
+6. /categories
+
+7. /logout
+
+8. /switch-role     -> auth required
+
+9. /create-tutorial     -> auth required
+
+7. /created-tutorials   -> auth required
+
+8. /add-review
+
+9. /get-reviews

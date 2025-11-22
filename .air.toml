@@ -1,0 +1,14 @@
+# .air.toml
+root = "."
+tmp_dir = "tmp"
+
+# Build settings
+build = "go build -o ./tmp/main ."
+bin = "tmp/main"
+include_ext = ["go", "tpl", "tmpl", "html"]
+
+# Exclude directories (don't watch)
+exclude_dir = ["assets", "tmp", "vendor"]
+
+# Optional: delay restart in seconds
+delay = 1000
