@@ -23,7 +23,6 @@ import (
 //  6. If the token is valid, the request continues to the next handler.
 //
 // Returns a gin.HandlerFunc that performs this authentication check.
-
 func AuthMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		authHeader := c.GetHeader("Authorization")
@@ -36,13 +35,17 @@ func AuthMiddleware() gin.HandlerFunc {
 
 		token := strings.Split(authHeader, " ")[1]
 
-		// Verify the token
-		valid, err := utils.VerifyJWT(token)
-		if err != nil || !valid {
+		// Extract the userID from JWT
+		userID, err := utils.ExtractDataFromJwt(token)
+		if err != nil {
 			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Unauthorized"})
 			return
 		}
 
+		// Store userID into Gin context
+		c.Set("user_id", userID)
+
 		c.Next()
 	}
 }
+

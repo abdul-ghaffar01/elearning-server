@@ -17,11 +17,18 @@ func SetupRoutes(router *gin.Engine) {
 
 		// User related routes
 		auth.GET("/user/:id", controllers.UserDetails)
+
+	}
+
+	optionalAuth := router.Group("")
+	optionalAuth.Use(middlewares.OptionalAuthMiddleware())
+	{
+		optionalAuth.GET("/tutorials", controllers.AllTutorials)
 	}
 
 	// Public routes (no prefix)
 	public := router.Group("")
 	{
-		public.GET("/tutorials", controllers.AllTutorials)
+		public.GET("/something", controllers.AllTutorials)  // will remove later
 	}
 }

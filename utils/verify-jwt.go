@@ -17,6 +17,7 @@ import (
 // Returns:
 //  - true, nil    → token is valid
 //  - false, error → invalid or expired token
+
 func VerifyJWT(tokenString string) (bool, error) {
 	// Parse and validate token
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
@@ -36,6 +37,8 @@ func VerifyJWT(tokenString string) (bool, error) {
 	if !token.Valid {
 		return false, errors.New("invalid token")
 	}
+
+	// TODO: will be checked if the token is not marked as expired in DB (for logout functionality)
 
 	return true, nil
 }
