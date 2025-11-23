@@ -1,8 +1,9 @@
 package main
 
 import (
+	"elearning-server/database"
 	"elearning-server/routes"
-	
+
 	"log"
 
 	"github.com/gin-gonic/gin"
@@ -16,6 +17,11 @@ func main() {
 	if err != nil {
 		log.Println("No .env file found")
 	}
+
+	// connecting with database 
+	database.Connect()
+	defer database.CloseDB()  // closing the database when main function ends
+
 
 	// Creating a gin router
 	router := gin.Default()
