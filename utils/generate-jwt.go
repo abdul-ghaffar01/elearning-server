@@ -42,7 +42,6 @@ func GenerateJWT(userID string, typeOfToken string) (string, error) {
 		return "", err
 	}
 
-	// TODO: Store refresh tokens in DB (not implemented here)
 
 	return tokenString, nil
 }

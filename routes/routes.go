@@ -24,11 +24,13 @@ func SetupRoutes(router *gin.Engine) {
 	optionalAuth.Use(middlewares.OptionalAuthMiddleware())
 	{
 		optionalAuth.GET("/tutorials", controllers.AllTutorials)
+		optionalAuth.GET("/tutorials/:id", controllers.SingleTutorial)
 	}
 
 	// Public routes (no prefix)
 	public := router.Group("")
 	{
-		public.GET("/something", controllers.AllTutorials)  // will remove later
+		public.GET("/google-login", controllers.GoogleLogin)
+		public.GET("/google/callback", controllers.GoogleCallback)
 	}
 }
