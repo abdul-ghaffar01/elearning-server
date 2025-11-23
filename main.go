@@ -18,9 +18,13 @@ func main() {
 		log.Println("No .env file found")
 	}
 
-	// connecting with database 
+	// connecting with database
 	database.Connect()
-	defer database.CloseDB()  // closing the database when main function ends
+	defer database.CloseDB() // closing the database when main function ends
+	
+	// Creating the database schema
+	database.LoadAndRunSchema("./database/schema")
+
 
 
 	// Creating a gin router
