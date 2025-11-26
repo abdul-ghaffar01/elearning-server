@@ -9,6 +9,12 @@ import (
 func SetupRoutes(router *gin.Engine) {
 	router.GET("/ping", controllers.PongController)
 
+	router.GET("/", func (c *gin.Context) {
+		c.JSON(200, gin.H{
+			"message": "Welcome to eLearning API",
+		})
+	})
+
 	// Auth required routes (no prefix)
 	auth := router.Group("")
 	auth.Use(middlewares.AuthMiddleware())
