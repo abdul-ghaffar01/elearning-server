@@ -7,11 +7,10 @@ CREATE TABLE IF NOT EXISTS auth(
     isExpired BOOLEAN DEFAULT FALSE,
     ip inet,
     loginAt TIMESTAMPTZ DEFAULT NOW(),
-    logoutAt TIMESTAMPTZ,
+    logoutAt TIMESTAMPTZ DEFAULT NULL,
     deviceType VARCHAR(100),
     os VARCHAR(100),
     browser VARCHAR(100),
     country VARCHAR(100),
-    city VARCHAR(100),
-    expireTime TIMESTAMPTZ NOT NULL
+    city VARCHAR(100)
 )

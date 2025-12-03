@@ -6,6 +6,7 @@ import (
 	"elearning-server/utils"
 	"encoding/json"
 	"io"
+	"log"
 
 	"github.com/gin-gonic/gin"
 	"github.com/mssola/user_agent"
@@ -62,11 +63,34 @@ func GoogleCallback(c *gin.Context) {
 	country := c.GetHeader("CF-IPCountry")
 	city := c.GetHeader("CF-IPCity")
 
-	// ---------------------------------------
-
 	refreshToken, _ := utils.GenerateJWT(googleUser.ID, "refresh")
 	accessToken, _ := utils.GenerateJWT(googleUser.ID, "access")
 
+	// Checking if user exists else creating a new user
+	user, err := lib.FindOrCreateUser(googleUser.Name, googleUser.Email, googleUser.Picture)
+
+	if err != nil {
+		c.JSON(500, gin.H{"error": "Failed to find or create user"})
+		return
+	}
+
+	// saving login in the database
+	err = lib.SaveLogin(
+		user.ID,
+		refreshToken,
+		ip,
+		deviceType,
+		os,
+		browser,
+		country,
+		city,
+	)
+	if err != nil {
+		c.JSON(500, gin.H{"error": "Failed to save login"})
+		return
+	}
+
+	log.Println(user)
 	c.JSON(200, gin.H{
 		"user":         googleUser,
 		"accessToken":  accessToken,
