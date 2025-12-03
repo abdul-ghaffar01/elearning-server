@@ -25,6 +25,9 @@ RUN apk --no-cache add ca-certificates
 # Set workdir
 WORKDIR /app
 
+# Copy schema files
+COPY database/ /app/database
+
 # Copy binary from builder
 COPY --from=builder /app/server .
 

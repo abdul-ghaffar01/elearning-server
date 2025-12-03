@@ -42,10 +42,6 @@ func GoogleCallback(c *gin.Context) {
 
 	json.Unmarshal(data, &googleUser)
 
-	// ---------------------------------------
-	// 🔍 Extract Metadata
-	// ---------------------------------------
-
 	// IP
 	ip := c.ClientIP()
 
