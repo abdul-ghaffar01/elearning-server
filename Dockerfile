@@ -1,10 +1,10 @@
 # ---- Build Stage ----
-FROM golang:1.25 AS builder
+FROM golang:1.21-alpine AS builder
 
-# Set the working directory inside the container
+# Set workdir
 WORKDIR /app
 
-# Copy go.mod and go.sum first (to leverage caching)
+# Copy go.mod and go.sum first to leverage caching
 COPY go.mod go.sum ./
 
 # Download dependencies
@@ -22,17 +22,17 @@ FROM alpine:latest
 # Install necessary CA certs
 RUN apk --no-cache add ca-certificates
 
-# Set workdir
+# Set working directory
 WORKDIR /app
 
-# Copy schema files
+# Copy schema and query files
 COPY database/ /app/database
 
-# Copy binary from builder
+# Copy binary from builder stage
 COPY --from=builder /app/server .
 
-# Expose application port (change if your app uses a different port)
+# Expose application port (adjust if needed)
 EXPOSE 4406
 
-# Start the app
+# Start the application
 CMD ["./server"]
