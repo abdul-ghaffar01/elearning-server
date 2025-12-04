@@ -7,7 +7,7 @@ import (
 )
 
 func CreateNewUser(name, email, pictureURL string) (*types.User, error) {
-	query, err := utils.LoadQuery("create_new_user")
+	query, err := utils.LoadQuery("users/create_new_user")
 	if err != nil {
 		return nil, err
 	}
