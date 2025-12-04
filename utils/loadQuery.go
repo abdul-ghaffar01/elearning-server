@@ -9,7 +9,7 @@ import (
 // LoadQuery reads an SQL file from database/query folder and returns its contents.
 func LoadQuery(filename string) (string, error) {
 	// Build path: project_root/database/query/filename
-	path := filepath.Join("database", "query", filename, ".sql")
+	path := filepath.Join("database", "query", filename + ".sql")
 
 	content, err := os.ReadFile(path)
 	if err != nil {
