@@ -1,2 +1,2 @@
-SELECT id, name, email, picture_url, created_at
+SELECT id, fullname, email, profile, joined
 FROM users WHERE email = $1
