@@ -15,7 +15,7 @@ func FindUserByEmail(email string) (*types.User, error) {
 	row := database.DB.QueryRow(query, email)
 
 	var u types.User
-	err = row.Scan(&u.ID, &u.FullName, &u.Email, &u.Profile, &u.Joined)
+	err = row.Scan(&u.ID, &u.FullName, &u.Email, &u.Profile, &u.Joined, &u.ProfileSetupped)
 
 	if err == sql.ErrNoRows {
 		return nil, sql.ErrNoRows

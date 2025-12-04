@@ -14,7 +14,7 @@ func CreateNewUser(name, email, pictureURL string) (*types.User, error) {
 	row := database.DB.QueryRow(query, name, email, pictureURL)
 
 	var u types.User
-	err = row.Scan(&u.ID, &u.FullName, &u.Email, &u.Profile, &u.Joined)
+	err = row.Scan(&u.ID, &u.FullName, &u.Email, &u.Profile, &u.Joined, &u.ProfileSetupped)
 	if err != nil {
 		return nil, err
 	}
