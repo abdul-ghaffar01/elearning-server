@@ -66,7 +66,7 @@ func GoogleCallback(c *gin.Context) {
 	user, err := lib.FindOrCreateUser(googleUser.Name, googleUser.Email, googleUser.Picture)
 
 	if err != nil {
-		log.Println("Error in FindOrCreateUser:", err)
+		log.Println("Error in FindOrCreateUser function:", err)
 		c.JSON(500, gin.H{"error": "Failed to find or create user"})
 		return
 	}
