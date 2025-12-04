@@ -87,9 +87,8 @@ func GoogleCallback(c *gin.Context) {
 		return
 	}
 
-	log.Println(user)
 	c.JSON(200, gin.H{
-		"user":         googleUser,
+		"user":         user,
 		"accessToken":  accessToken,
 		"refreshToken": refreshToken,
 		"ip":           ip,
