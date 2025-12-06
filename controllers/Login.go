@@ -66,7 +66,7 @@ func Login(c *gin.Context) {
 		return
 	}
 
-	// ------------------ Device + Browser Info ------------------
+	// ------------------ Device + Browser Information ------------------
 	ua := user_agent.New(c.GetHeader("User-Agent"))
 	browser, _ := ua.Browser()
 	os := ua.OS()
