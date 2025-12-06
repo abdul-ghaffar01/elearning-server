@@ -26,6 +26,7 @@ func SetupRoutes(router *gin.Engine) {
 
 	}
 
+	// Optional routes 
 	optionalAuth := router.Group("")
 	optionalAuth.Use(middlewares.OptionalAuthMiddleware())
 	{
@@ -38,5 +39,6 @@ func SetupRoutes(router *gin.Engine) {
 	{
 		public.GET("/google-login", controllers.GoogleLogin)
 		public.GET("/google/callback", controllers.GoogleCallback)
+		public.POST("/login", controllers.Login)
 	}
 }

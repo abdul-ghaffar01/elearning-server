@@ -1,4 +1,4 @@
-package lib
+package user
 
 import (
 	"elearning-server/database"

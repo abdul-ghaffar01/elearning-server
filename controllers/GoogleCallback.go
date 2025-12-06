@@ -4,6 +4,8 @@ import (
 	"context"
 	"elearning-server/lib"
 	"elearning-server/utils"
+	"elearning-server/utils/auth"
+	"elearning-server/utils/user"
 	"encoding/json"
 	"io"
 	"log"
@@ -59,11 +61,13 @@ func GoogleCallback(c *gin.Context) {
 	country := c.GetHeader("CF-IPCountry")
 	city := c.GetHeader("CF-IPCity")
 
-	refreshToken, _ := utils.GenerateJWT(googleUser.ID, "refresh")
-	accessToken, _ := utils.GenerateJWT(googleUser.ID, "access")
-
 	// Checking if user exists else creating a new user
-	user, err := lib.FindOrCreateUser(googleUser.Name, googleUser.Email, googleUser.Picture)
+	user, err := user.FindOrCreateUser(googleUser.Name, googleUser.Email, googleUser.Picture)
+
+	// Generating tokens
+	refreshToken, _ := utils.GenerateJWT(user.ID, "refresh")
+	accessToken, _ := utils.GenerateJWT(user.ID, "access")
+
 
 	if err != nil {
 		log.Println("Error in FindOrCreateUser function:", err)
@@ -72,7 +76,7 @@ func GoogleCallback(c *gin.Context) {
 	}
 
 	// saving login in the database
-	err = lib.SaveLogin(
+	err = auth.SaveLogin(
 		user.ID,
 		refreshToken,
 		ip,
