@@ -2,32 +2,43 @@ package user
 
 import (
 	"database/sql"
-	"log"
 	"elearning-server/types"
+	"log"
 )
 
-func FindOrCreateUser(name, email, pictureURL string) (*types.User, error) {
+func FindOrCreateUser(name, email, pictureURL string) (*types.PublicUser, error) {
 
 	// 1. Try to find user by email
-	user, err := FindUserByEmail(email)
+	u, err := FindUserByEmail(email)
+
 	if err != nil && err != sql.ErrNoRows {
 		return nil, err
 	}
 
-	// 2. If user exists:
-	if user != nil {
+	// 2. If user exists
+	if u != nil {
 		log.Println("User already exists")
 
-		// If pictureURL provided → update
-		if pictureURL != "" && user.Profile != pictureURL {
-			return UpdateUserPicture(email, pictureURL)
+		// Update picture if needed
+		if pictureURL != "" && u.Profile != pictureURL {
+			updated, err := UpdateUserPicture(email, pictureURL)
+			if err != nil {
+				return nil, err
+			}
+			return updated, nil
 		}
 
-		return user, nil
+		// Convert to public user
+		public := types.ToPublicUser(u)
+		return &public, nil
 	}
 
-	// 3. If user does not exist → create one
+	// 3. If user does NOT exist → Create
 	log.Println("Creating new user")
-	return CreateNewUser(name, email, "", pictureURL)
-}
+	newUser, err := CreateNewUser(name, email, "", pictureURL)
+	if err != nil {
+		return nil, err
+	}
 
+	return newUser, nil
+}

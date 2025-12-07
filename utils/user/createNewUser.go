@@ -23,7 +23,7 @@ This function:
   - Loads SQL dynamically from queries/users/create_new_user.sql
   - Scans all returned user fields into types.User
 */
-func CreateNewUser(fullname, email, password, profile string) (*types.User, error) {
+func CreateNewUser(fullname, email, password, profile string) (*types.PublicUser, error) {
 
 	if fullname == "" || email == "" {
 		return nil, errors.New("fullname and email are required")
@@ -55,7 +55,7 @@ func CreateNewUser(fullname, email, password, profile string) (*types.User, erro
 	)
 
 	// Scan user
-	var u types.User
+	var u types.PublicUser
 	err = row.Scan(
 		&u.ID,
 		&u.FullName,
