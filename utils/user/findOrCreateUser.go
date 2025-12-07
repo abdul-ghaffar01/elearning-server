@@ -28,6 +28,6 @@ func FindOrCreateUser(name, email, pictureURL string) (*types.User, error) {
 
 	// 3. If user does not exist → create one
 	log.Println("Creating new user")
-	return CreateNewUser(name, email, pictureURL)
+	return CreateNewUser(name, email, "", pictureURL)
 }
 
