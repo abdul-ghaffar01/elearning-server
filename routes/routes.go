@@ -40,5 +40,6 @@ func SetupRoutes(router *gin.Engine) {
 		public.GET("/google-login", controllers.GoogleLogin)
 		public.GET("/google/callback", controllers.GoogleCallback)
 		public.POST("/login", controllers.Login)
+		public.POST("/signup", controllers.Signup)
 	}
 }

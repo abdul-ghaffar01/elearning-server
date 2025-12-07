@@ -40,7 +40,7 @@ func CreateNewUser(fullname, email, password, profile string) (*types.User, erro
 	}
 
 	// Load SQL
-	query, err := utils.LoadQuery("users/create_user")
+	query, err := utils.LoadQuery("users/create_new_user")
 	if err != nil {
 		return nil, err
 	}
