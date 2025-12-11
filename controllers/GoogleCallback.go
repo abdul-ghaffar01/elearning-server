@@ -21,6 +21,7 @@ func GoogleCallback(c *gin.Context) {
 	// Exchange code for token
 	token, err := lib.GoogleOAuthConfig.Exchange(context.Background(), code)
 	if err != nil {
+		log.Println("Error exchanging token:", err)
 		c.JSON(400, gin.H{"error": "Failed to exchange token"})
 		return
 	}
