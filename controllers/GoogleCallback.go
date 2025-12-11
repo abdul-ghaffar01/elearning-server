@@ -9,6 +9,7 @@ import (
 	"encoding/json"
 	"io"
 	"log"
+	"os"
 
 	"github.com/gin-gonic/gin"
 	"github.com/mssola/user_agent"
@@ -50,7 +51,7 @@ func GoogleCallback(c *gin.Context) {
 	// User Agent Parsing
 	ua := user_agent.New(c.GetHeader("User-Agent"))
 	browser, _ := ua.Browser()
-	os := ua.OS()
+	userOs := ua.OS()
 
 	deviceType := "Desktop"
 	if ua.Mobile() {
@@ -68,7 +69,6 @@ func GoogleCallback(c *gin.Context) {
 	refreshToken, _ := utils.GenerateJWT(user.ID, "refresh")
 	accessToken, _ := utils.GenerateJWT(user.ID, "access")
 
-
 	if err != nil {
 		log.Println("Error in FindOrCreateUser function:", err)
 		c.JSON(500, gin.H{"error": "Failed to find or create user"})
@@ -81,7 +81,7 @@ func GoogleCallback(c *gin.Context) {
 		refreshToken,
 		ip,
 		deviceType,
-		os,
+		userOs,
 		browser,
 		country,
 		city,
@@ -91,15 +91,20 @@ func GoogleCallback(c *gin.Context) {
 		return
 	}
 
-	c.JSON(200, gin.H{
-		"user":         user,
-		"accessToken":  accessToken,
-		"refreshToken": refreshToken,
-		"ip":           ip,
-		"deviceType":   deviceType,
-		"browser":      browser,
-		"os":           os,
-		"country":      country,
-		"city":         city,
-	})
+	
+	// Set refresh token cookie
+	backendUrl := os.Getenv("BASE_URL")
+	c.SetCookie(
+		"refreshToken",   // cookie name
+		refreshToken,     // value
+		3600*24*7,        // maxAge (7 days)
+		"/",              // path
+		backendUrl, // domain (use "" for localhost)
+		true,             // secure (true in production)
+		true,             // httpOnly
+	)
+	
+	// redirecting to the "frontend/login/google" with tokens and user info
+	c.Redirect(302, "https://your-frontend-url.com/login/google?accessToken="+accessToken)
+
 }
