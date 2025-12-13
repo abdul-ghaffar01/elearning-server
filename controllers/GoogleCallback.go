@@ -106,6 +106,6 @@ func GoogleCallback(c *gin.Context) {
 	)
 	
 	// redirecting to the "frontend/login/google" with tokens and user info
-	c.Redirect(302, "https://your-frontend-url.com/login/google?accessToken="+accessToken)
+	c.Redirect(302, os.Getenv("FRONTEND_URL")+"/login/google?accessToken="+accessToken)
 
 }
