@@ -100,7 +100,7 @@ func GoogleCallback(c *gin.Context) {
 		refreshToken,     // value
 		3600*24*7,        // maxAge (7 days)
 		"/",              // path
-		backendUrl, // domain (use "" for localhost)
+		backendUrl, // domain
 		true,             // secure (true in production)
 		true,             // httpOnly
 	)
