@@ -43,7 +43,7 @@ func AuthMiddleware() gin.HandlerFunc {
 		}
 
 		// Store userID into Gin context
-		c.Set("user_id", userID)
+		c.Set("userId", userID)
 
 		c.Next()
 	}

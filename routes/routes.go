@@ -22,7 +22,7 @@ func SetupRoutes(router *gin.Engine) {
 		auth.GET("/dashboard", controllers.DashboardController)
 
 		// User related routes
-		auth.GET("/user/:id", controllers.UserDetails)
+		auth.GET("/user", controllers.UserDetails)
 
 	}
 
