@@ -94,13 +94,13 @@ func GoogleCallback(c *gin.Context) {
 
 	
 	// Set refresh token cookie
-	backendUrl := os.Getenv("BASE_URL")
+	url := os.Getenv("DOMAIN")
 	c.SetCookie(
 		"refreshToken",   // cookie name
 		refreshToken,     // value
 		3600*24*7,        // maxAge (7 days)
 		"/",              // path
-		backendUrl, 	  // domain
+		url, 	  // domain
 		true,             // secure (true in production)
 		true,             // httpOnly
 	)
