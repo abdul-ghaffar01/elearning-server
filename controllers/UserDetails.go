@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"elearning-server/utils/user"
+	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -22,6 +23,7 @@ func UserDetails(c *gin.Context) {
 		return
 	}
 
+	fmt.Println(userIDRaw, "user id raw")
 	// 2. Type assert to uuid.UUID
 	userId, ok := userIDRaw.(uuid.UUID)
 	if !ok {

@@ -1,11 +1,13 @@
 package main
 
 import (
+	"log"
+	"time"
+
 	"elearning-server/database"
 	"elearning-server/routes"
 
-	"log"
-
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 )
@@ -13,26 +15,41 @@ import (
 func main() {
 
 	// Load .env file
-	err := godotenv.Load()
-	if err != nil {
+	if err := godotenv.Load(); err != nil {
 		log.Println("No .env file found")
 	}
 
-	// connecting with database
+	// Connect database
 	database.Connect()
-	defer database.CloseDB() // closing the database when main function ends
-	
-	// Creating the database schema
+	defer database.CloseDB()
+
+	// Load schema
 	database.LoadAndRunSchema("./database/schema")
 
-
-
-	// Creating a gin router
+	// Create router
 	router := gin.Default()
 
-	// setting up all the routes
+	// ✅ CORS CONFIG (MUST BE BEFORE ROUTES)
+	router.Use(cors.New(cors.Config{
+		AllowOrigins: []string{
+			"https://elearning.iabdulghaffar.com",
+		},
+		AllowMethods: []string{
+			"GET", "POST", "PUT", "DELETE", "OPTIONS",
+		},
+		AllowHeaders: []string{
+			"Origin", "Content-Type", "Authorization",
+		},
+		ExposeHeaders: []string{
+			"Set-Cookie",
+		},
+		AllowCredentials: true,
+		MaxAge: 12 * time.Hour,
+	}))
+
+	// Setup routes
 	routes.SetupRoutes(router)
 
-	// Starting the server on port 4406
+	// Start server
 	router.Run(":4406")
 }
