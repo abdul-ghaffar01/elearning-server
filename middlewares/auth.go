@@ -3,9 +3,9 @@ package middlewares
 import (
 	"elearning-server/utils"
 	"net/http"
-	"strings"
 
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 )
 
 // AuthMiddleware validates the Authorization header of incoming requests.
@@ -23,29 +23,36 @@ import (
 //  6. If the token is valid, the request continues to the next handler.
 //
 // Returns a gin.HandlerFunc that performs this authentication check.
+
 func AuthMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		authHeader := c.GetHeader("Authorization")
 
 		// Expect: "Bearer <token>"
-		if authHeader == "" || !strings.HasPrefix(authHeader, "Bearer ") {
+		if authHeader == "" || len(authHeader) < 7 || authHeader[:7] != "Bearer " {
 			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Missing or invalid token"})
 			return
 		}
 
-		token := strings.Split(authHeader, " ")[1]
+		token := authHeader[7:] // extract token
 
-		// Extract the userID from JWT
-		userID, err := utils.ExtractDataFromJwt(token)
+		// Extract the userID string from JWT
+		userIDStr, err := utils.ExtractDataFromJwt(token)
 		if err != nil {
 			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Unauthorized"})
 			return
 		}
 
-		// Store userID into Gin context
-		c.Set("userId", userID)
+		// ✅ Convert string to uuid.UUID
+		userUUID, err := uuid.Parse(userIDStr)
+		if err != nil {
+			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Invalid user ID format"})
+			return
+		}
+
+		// Store UUID directly in Gin context
+		c.Set("userId", userUUID)
 
 		c.Next()
 	}
 }
-
